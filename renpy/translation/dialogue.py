@@ -167,10 +167,18 @@ class DialogueFile(object):
 
                 if isinstance(n, renpy.ast.Say):
 
+                    metas = [ ]
+
                     if not n.who:
-                        who = ""
+                        metas.append("")
                     else:
-                        who = n.who
+                        metas.append(n.who)
+
+                    if n.attributes is not None:
+                        metas.extend(n.attributes)
+
+                    if not n.interact:
+                        metas.append("nointeract")
 
                     what = n.what
 
@@ -184,7 +192,7 @@ class DialogueFile(object):
 
                         lines.append([
                             t.identifier,
-                            who,
+                            " ".join(metas),
                             what,
                             n.filename,
                             str(n.linenumber),
